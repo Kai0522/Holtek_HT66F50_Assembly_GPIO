@@ -1,0 +1,218 @@
+#include HT66F50.inc
+
+ds	.section	'data'
+DEL1  		   DB     	?                   
+DEL2  		   DB    	?                   
+DEL3		   DB		?
+COUNT1         DB       ?
+LED_PORT	   EQU		PC			
+LED_PORTC	   EQU		PCC
+cs	.section	at      0	'code'
+               ORG          00H
+;==========================================================
+MAIN:
+               CALL     SETUP
+               CALL     RIGHT
+               CALL     LEFT
+               
+               JMP      $
+;==========================================================
+SETUP          PROC
+               CLR      ACERL
+               MOV      A,08H
+               MOV      CP0C,A
+               MOV      CP1C,A
+               CLR      LED_PORTC
+               CLR      LED_PORT
+               SET      C
+               RET
+SETUP          ENDP
+;==========================================================
+RIGHT          PROC
+               RRC      LED_PORT
+               CALL     DELAY
+               SNZ      LED_PORT.0
+               JMP      RIGHT
+               
+               SET      C
+               MOV      A,7
+               MOV      COUNT1,A
+               RRC      LED_PORT
+               MOV      A,00000001b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1              
+               JMP      $-6
+               
+               SET      C
+               MOV      A,6
+               MOV      COUNT1,A
+               RRC      LED_PORT
+               MOV      A,00000011b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,5
+               MOV      COUNT1,A
+               RRC      LED_PORT
+               MOV      A,00000111b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,4
+               MOV      COUNT1,A
+               RRC      LED_PORT
+               MOV      A,00001111b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,3
+               MOV      COUNT1,A
+               RRC      LED_PORT
+               MOV      A,00011111b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,2
+               MOV      COUNT1,A
+               RRC      LED_PORT
+               MOV      A,00111111b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,1
+               MOV      COUNT1,A
+               RRC      LED_PORT
+               MOV      A,01111111b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               SET      C
+               RET
+RIGHT          ENDP
+;==============================================================
+LEFT           PROC
+               RLC      LED_PORT
+               CALL     DELAY
+               SNZ      LED_PORT.7
+               JMP      LEFT
+               
+               SET      C
+               MOV      A,7
+               MOV      COUNT1,A
+               RLC      LED_PORT
+               MOV      A,10000000b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,6
+               MOV      COUNT1,A
+               RLC      LED_PORT
+               MOV      A,11000000b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,5
+               MOV      COUNT1,A
+               RLC      LED_PORT
+               MOV      A,11100000b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,4
+               MOV      COUNT1,A
+               RLC      LED_PORT
+               MOV      A,11110000b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,3
+               MOV      COUNT1,A
+               RLC      LED_PORT
+               MOV      A,11111000b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,2
+               MOV      COUNT1,A
+               RLC      LED_PORT
+               MOV      A,11111100b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               
+               SET      C
+               MOV      A,1
+               MOV      COUNT1,A
+               RLC      LED_PORT
+               MOV      A,11111110b
+               ORM      A,LED_PORT
+               CALL     DELAY
+               CLR      C
+               SDZ      COUNT1
+               JMP      $-6
+               SET      LED_PORT
+               RET
+LEFT           ENDP
+;=============================================================
+DELAY          PROC
+               MOV      A,100
+               MOV      DEL1,A
+DEL_1:         MOV      A,3
+               MOV      DEL2,A
+DEL_2:         MOV      A,70
+               MOV      DEL3,A
+DEL_3:         SDZ      DEL3
+               JMP      DEL_3
+               SDZ      DEL2
+               JMP      DEL_2
+               SDZ      DEL1
+               JMP      DEL_1
+               RET
+DELAY          ENDP
+;===============================================================               
